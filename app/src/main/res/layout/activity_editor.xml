@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_margin"
+    tools:context=".EditorActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="@string/category_name"
+            style="@style/CategoryStyle" />
+
+        <!-- Name field -->
+        <EditText
+            android:id="@+id/edit_wine_name"
+            android:hint="@string/hint_wine_name"
+            android:inputType="textCapWords"
+            style="@style/EditorFieldStyle" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="@string/category_winery"
+            style="@style/CategoryStyle" />
+
+        <!-- Winery field -->
+        <EditText
+            android:id="@+id/edit_wine_winery"
+            android:hint="@string/hint_wine_winery"
+            android:inputType="textCapWords"
+            style="@style/EditorFieldStyle" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="@string/category_year"
+            style="@style/CategoryStyle" />
+
+        <!-- Year field -->
+        <EditText
+            android:id="@+id/edit_wine_year"
+            android:hint="@string/hint_wine_year"
+            android:inputType="textCapWords"
+            android:inpuType="number"
+            style="@style/EditorFieldStyle" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="@string/category_quantity"
+            style="@style/CategoryStyle" />
+
+        <!-- Quantity field -->
+        <EditText
+            android:id="@+id/edit_wine_quantity"
+            android:hint="@string/hint_wine_quantity"
+            android:inputType="textCapWords"
+            android:inpuType="number"
+            style="@style/EditorFieldStyle" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>
