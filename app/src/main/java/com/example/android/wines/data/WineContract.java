@@ -69,5 +69,5 @@ public final class WineContract {
         public static final String COLUMN_WINE_QUANTITY = "quantity";
 
     }//End of WineEntry class
-    
+
 }//End of WineContract
