@@ -85,7 +85,24 @@
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <TextView
+            android:text="@string/category_price"
+            style="@style/CategoryStyle" />
+
+        <!-- Year field -->
+        <EditText
+            android:id="@+id/edit_wine_price"
+            android:hint="@string/hint_wine_price"
+            android:inputType="textCapWords"
+            android:inpuType="number"
+            style="@style/EditorFieldStyle" />
+
+    </LinearLayout>
 
 
 

@@ -67,6 +67,7 @@ public final class WineContract {
         public static final String COLUMN_WINE_WINERY = "winery";
         public static final String COLUMN_WINE_YEAR = "year";
         public static final String COLUMN_WINE_QUANTITY = "quantity";
+        public static final String COLUMN_WINE_PRICE = "price";
 
     }//End of WineEntry class
 

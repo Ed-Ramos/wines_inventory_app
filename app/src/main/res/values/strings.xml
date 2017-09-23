@@ -31,11 +31,17 @@
     <!-- Label for year information in the editor [CHAR LIMIT=30] -->
     <string name="category_quantity">Quantity</string>
 
+    <!-- Label for price information in the editor [CHAR LIMIT=30] -->
+    <string name="category_price">Price</string>
+
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_wine_name">Wine Name</string>
 
     <!-- Text hint for year field in the editor [CHAR LIMIT=30] -->
     <string name="hint_wine_year">Year</string>
+
+    <!-- Text hint for price field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_wine_price">Price</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_wine_quantity">Quantity</string>
