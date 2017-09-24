@@ -59,8 +59,7 @@
         <EditText
             android:id="@+id/edit_wine_year"
             android:hint="@string/hint_wine_year"
-            android:inputType="textCapWords"
-            android:inpuType="number"
+            android:inputType="textCapWords|number"
             style="@style/EditorFieldStyle" />
 
     </LinearLayout>
@@ -78,8 +77,7 @@
         <EditText
             android:id="@+id/edit_wine_quantity"
             android:hint="@string/hint_wine_quantity"
-            android:inputType="textCapWords"
-            android:inpuType="number"
+            android:inputType="textCapWords|number"
             style="@style/EditorFieldStyle" />
 
     </LinearLayout>
@@ -98,22 +96,10 @@
         <EditText
             android:id="@+id/edit_wine_price"
             android:hint="@string/hint_wine_price"
-            android:inputType="textCapWords"
-            android:inpuType="number"
+            android:inputType="textCapWords|number"
             style="@style/EditorFieldStyle" />
 
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
 
 
 </LinearLayout>

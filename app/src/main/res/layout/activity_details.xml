@@ -8,14 +8,4 @@
     android:padding="@dimen/activity_margin"
     tools:context=".DetailsActivity">
 
-
-
-
-
-
-
-
-
-
-
 </LinearLayout>

@@ -74,8 +74,8 @@ public class WineCursorAdapter extends CursorAdapter{
 
         // Update the TextViews with the attributes for the current wine
         nameTextView.setText(wineName);
-        quantityTextView.setText(wineQuantity);
-        priceTextView.setText(winePrice);
+        quantityTextView.setText("Qty:" + wineQuantity);
+        priceTextView.setText("$"+winePrice);
     }
 
 }//End of WineCursorAdapter

@@ -1,5 +1,8 @@
 package com.example.android.wines;
 
+import android.support.v7.app.AppCompatActivity;
 
-public class EditorActivity {
+
+
+public class EditorActivity extends AppCompatActivity{
 }
