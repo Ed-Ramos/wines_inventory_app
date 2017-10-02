@@ -19,6 +19,10 @@
     <!-- Label for editor overflow menu option that deletes the current wine [CHAR LIMIT=20] -->
     <string name="action_delete">Delete</string>
 
+    <!-- Label for details overflow menu option that edits the current wine [CHAR LIMIT=20] -->
+    <string name="action_edit_wine">Edit Wine</string>
+
+
     <!-- Label for name information in the editor [CHAR LIMIT=30] -->
     <string name="category_name">Name</string>
 
@@ -69,6 +73,21 @@
 
     <!-- Toast message in editor when current wine has failed to be updated [CHAR LIMIT=NONE] -->
     <string name="editor_update_wine_failed">Error with updating wine</string>
+
+    <!-- Toast message in editor when name field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_name">Cant have empty wine name</string>
+
+    <!-- Toast message in editor when winery field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_winery">Cant have empty wine winery</string>
+
+    <!-- Toast message in editor when year field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_year">Cant have empty wine year</string>
+
+    <!-- Toast message in editor when quantity field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_quantity">Cant have empty wine price</string>
+
+    <!-- Toast message in editor when price field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_price">Cant have empty wine price</string>
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>

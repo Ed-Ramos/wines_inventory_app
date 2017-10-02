@@ -1,7 +1,9 @@
 package com.example.android.wines;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
@@ -13,12 +15,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.wines.data.WineContract.WineEntry;
-
-import static android.R.attr.data;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -66,6 +68,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * Boolean flag that keeps track of whether the wine has been edited (true) or not (false)
      */
     private boolean mWineHasChanged = false;
+
+    /**
+     * OnTouchListener that listens for any user touches on a View, implying that they are modifying
+     * the view, and we change the mWineHasChanged boolean to true.
+     */
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            mWineHasChanged = true;
+            return false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -141,6 +156,39 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
+        if (TextUtils.isEmpty(nameString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_name),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        if (TextUtils.isEmpty(wineryString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_winery),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(yearString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_year),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(quantityString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_quantity),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        if (TextUtils.isEmpty(priceString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_price),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
 
         // Create a ContentValues object
         ContentValues values = new ContentValues();
@@ -149,24 +197,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(WineEntry.COLUMN_WINE_YEAR, yearString);
         values.put(WineEntry.COLUMN_WINE_QUANTITY, quantityString);
         values.put(WineEntry.COLUMN_WINE_PRICE, priceString);
-
-        // If the price is not provided by the user, don't try to parse the string into an
-        // integer value. Use 0 by default.
-        int price = 0;
-        if (!TextUtils.isEmpty(priceString)) {
-            price = Integer.parseInt(priceString);
-        }
-
-        values.put(WineEntry.COLUMN_WINE_PRICE, price);
-
-        // If the quantity is not provided by the user, don't try to parse the string into an
-        // integer value. Use 0 by default.
-        int quantity = 0;
-        if (!TextUtils.isEmpty(quantityString)) {
-            quantity = Integer.parseInt(quantityString);
-        }
-
-        values.put(WineEntry.COLUMN_WINE_QUANTITY, quantity);
 
         // Determine if this is a new or existing wine by checking if mCurrentWineUri is null or not
         if (mCurrentWineUri == null) {
@@ -183,6 +213,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Otherwise, the insertion was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_insert_wine_successful),
                         Toast.LENGTH_SHORT).show();
+
+                finish();
             }
 
         } else {
@@ -202,6 +234,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Toast.makeText(this, getString(R.string.editor_update_wine_successful),
                         Toast.LENGTH_SHORT).show();
             }
+
+            finish();
         }
 
 
@@ -238,7 +272,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 saveWine();
-                finish();
+                //finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
@@ -280,14 +314,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * +     * This method is called when the back button is pressed.
      * +
      */
-    @Override
-    public void onBackPressed() {
-        // If the pet hasn't changed, continue with handling back button press
-        if (!mWineHasChanged) {
-            super.onBackPressed();
-            return;
-        }
-
 
         @Override
         public void onBackPressed() {
@@ -313,22 +339,165 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
 
-
-
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return null;
-    }
+
+            // Since the editor shows all wine attributes, define a projection that contains
+            // all columns from the wine table
+            String[] projection = {
+                    WineEntry._ID,
+                    WineEntry.COLUMN_WINE_NAME,
+                    WineEntry.COLUMN_WINE_WINERY,
+                    WineEntry.COLUMN_WINE_YEAR,
+                    WineEntry.COLUMN_WINE_QUANTITY,
+                    WineEntry.COLUMN_WINE_PRICE};
+
+            // This loader will execute the ContentProvider's query method on a background thread
+            return new CursorLoader(this,   // Parent activity context
+                    mCurrentWineUri,         // Query the content URI for the current wine
+                    projection,             // Columns to include in the resulting Cursor
+                    null,                   // No selection clause
+                    null,                   // No selection arguments
+                    null);                  // Default sort order
+        }
 
 
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-    }
+            // Bail early if the cursor is null or there is less than 1 row in the cursor
+            if (cursor == null || cursor.getCount() < 1) {
+                return;
+            }
 
-    @Override
+            // Proceed with moving to the first row of the cursor and reading data from it
+            // (This should be the only row in the cursor)
+            if (cursor.moveToFirst()) {
+                // Find the columns of pet attributes that we're interested in
+                int nameColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME);
+                int wineryColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_WINERY);
+                int yearColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_YEAR);
+                int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
+                int priceColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE);
+
+                // Extract out the value from the Cursor for the given column index
+                String name = cursor.getString(nameColumnIndex);
+                String winery = cursor.getString(wineryColumnIndex);
+                int year = cursor.getInt(yearColumnIndex);
+                int quantity = cursor.getInt(quantityColumnIndex);
+                int price = cursor.getInt(priceColumnIndex);
+
+                // Update the views on the screen with the values from the database
+                mNameEditText.setText(name);
+                mWineryEditText.setText(winery);
+                mYearEditText.setText(Integer.toString(year));
+                mQuantityEditText.setText(Integer.toString(quantity));
+                mPriceEditText.setText(Integer.toString(price));
+            }
+
+        }//End of OnLoaderFinished
+
+
+        @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+            // If the loader is invalidated, clear out all the data from the input fields.
+            mNameEditText.setText("");
+            mWineryEditText.setText("");
+            mYearEditText.setText("");
+            mQuantityEditText.setText("");
+            mPriceEditText.setText("");
+
+        }
+
+
+        /**
+         * +     * Show a dialog that warns the user there are unsaved changes that will be lost
+         * +     * if they continue leaving the editor.
+         * +     *
+         * +     * @param discardButtonClickListener is the click listener for what to do when
+         * +     *                                   the user confirms they want to discard their changes
+         * +
+         */
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
+
+
+    /**
+     * +     * Prompt the user to confirm that they want to delete this wine.
+     * +
+     */
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the pet.
+                deleteWine();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the wine.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /**
+     * Perform the deletion of the wine in the database.
+     */
+    private void deleteWine() {
+        // Only perform the delete if this is an existing pet.
+        if (mCurrentWineUri != null) {
+            // Call the ContentResolver to delete the wine at the given content URI.
+            // Pass in null for the selection and selection args because the mCurrentWineUri
+            // content URI already identifies the wine that we want.
+            int rowsDeleted = getContentResolver().delete(mCurrentWineUri, null, null);
+
+            // Show a toast message depending on whether or not the delete was successful.
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, getString(R.string.editor_delete_wine_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_delete_wine_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        // Close the activity
+        finish();
+    }
+
 }//End of EditorActivity class

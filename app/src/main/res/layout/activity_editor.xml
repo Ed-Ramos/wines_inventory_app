@@ -92,7 +92,7 @@
             android:text="@string/category_price"
             style="@style/CategoryStyle" />
 
-        <!-- Year field -->
+        <!-- Price field -->
         <EditText
             android:id="@+id/edit_wine_price"
             android:hint="@string/hint_wine_price"

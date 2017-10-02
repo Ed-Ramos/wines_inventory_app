@@ -59,16 +59,16 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
                 // Create new intent to go to {@link EditorActivity}
-                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                Intent intent = new Intent(CatalogActivity.this, DetailsActivity.class);
 
                 //Form the content uri that represents the specific wine that was clicked on,
                 //by appending the "id" passed as input to this method onto the
                 //{@link WineEntry#Content_URI}.
                 //For example, the URI would be "content://com.example.android.wines/wines/2"
                 //if the wine with ID 2 was clicked on
-                Uri currentPetUri = ContentUris.withAppendedId(WineEntry.CONTENT_URI, id);
+                Uri currentWineUri = ContentUris.withAppendedId(WineEntry.CONTENT_URI, id);
 
-                intent.setData(currentPetUri);
+                intent.setData(currentWineUri);
 
                 startActivity(intent);
 
