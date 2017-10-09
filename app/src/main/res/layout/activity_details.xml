@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background = "#9ddef9"
     tools:context=".DetailsActivity">
 
 <LinearLayout
@@ -19,8 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/wine_image_height"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_a_photo"/>
-
+        android:src="@drawable/ic_add_a_photo" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,6 +93,29 @@
             android:hint="@string/hint_wine_quantity"
             android:inputType="textCapWords|number" />
 
+        </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/decrement_button"
+            android:layout_width="48sp"
+            android:layout_height="48sp"
+            android:onClick="decrement"
+            android:text="-" />
+
+        <Button
+            android:id="@+id/increment_button"
+            android:layout_width="48sp"
+            android:layout_height="48sp"
+            android:onClick="increment"
+            android:text="+" />
+
+
     </LinearLayout>
 
 
@@ -130,9 +153,14 @@
             android:hint="@string/hint_wine_winery_email"
             android:inputType="textCapWords" />
 
-
     </LinearLayout>
 
+    <Button
+        android:id="@+id/email_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="emailWinery"
+        android:text="Email" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -151,28 +179,6 @@
             android:inputType="textCapWords|number" />
 
     </LinearLayout>
-
-
-    <Button
-        android:id="@+id/decrement_button"
-        android:layout_width="48sp"
-        android:layout_height="48sp"
-        android:onClick="decrement"
-        android:text="-" />
-
-    <Button
-        android:id="@+id/increment_button"
-        android:layout_width="48sp"
-        android:layout_height="48sp"
-        android:onClick="increment"
-        android:text="+" />
-
-    <Button
-        android:id="@+id/email_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="emailWinery"
-        android:text="Email" />
 
     <Button
         android:id="@+id/phone_button"

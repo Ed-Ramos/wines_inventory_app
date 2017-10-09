@@ -128,7 +128,7 @@
                 android:id="@+id/edit_wine_winery_email"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_wine_winery_email"
-                android:inputType="textCapWords" />
+                android:inputType="textCapWords|textEmailAddress" />
 
         </LinearLayout>
 
@@ -147,7 +147,7 @@
                 android:id="@+id/edit_wine_winery_phone"
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_wine_winery_phone"
-                android:inputType="textCapWords|number" />
+                android:inputType="textCapWords|number|phone" />
 
         </LinearLayout>
 

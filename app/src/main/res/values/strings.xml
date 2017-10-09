@@ -55,9 +55,6 @@
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_wine_quantity">Quantity</string>
 
-    <!-- Units for quantity of the wine (kilograms) [CHAR LIMIT=5] -->
-    <string name="unit_wine_quantity">bottles</string>
-
     <!-- Text hint for winery field in the editor [CHAR LIMIT=30] -->
     <string name="hint_wine_winery">Winery</string>
 
@@ -89,31 +86,31 @@
     <string name="editor_update_wine_failed">Error with updating wine</string>
 
     <!-- Toast message in editor when name field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_name">Cant have empty wine name</string>
+    <string name="editor_require_wine_name">Can\'t have empty wine name</string>
 
     <!-- Toast message in editor when winery field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_winery">Cant have empty wine winery</string>
+    <string name="editor_require_wine_winery">Can\'t have empty wine winery</string>
 
     <!-- Toast message in editor when year field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_year">Cant have empty wine year</string>
+    <string name="editor_require_wine_year">Can\'t have empty wine year</string>
 
     <!-- Toast message in editor when quantity field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_quantity">Cant have empty wine price</string>
+    <string name="editor_require_wine_quantity">Can\'t have empty wine price</string>
 
     <!-- Toast message in editor when price field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_price">Cant have empty wine price</string>
+    <string name="editor_require_wine_price">Can\'t have empty wine price</string>
 
     <!-- Toast message in editor when winery email field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_email">Cant have empty winery email</string>
+    <string name="editor_require_wine_email">Can\'t have empty winery email</string>
 
     <!-- Toast message in editor when winery phone number field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_phone">Cant have empty winery phone number</string>
+    <string name="editor_require_wine_phone">Can\'t have empty winery phone number</string>
 
     <!-- Toast message in editor when wine image field is left empty [CHAR LIMIT=NONE] -->
-    <string name="editor_require_wine_image">Cant have empty wine image</string>
+    <string name="editor_require_wine_image">Can\'t have empty wine image</string>
 
     <!-- Toast message in details activity when no email appavailable to send email [CHAR LIMIT=NONE] -->
-    <string name="details_no_email_app">Cant find an email app</string>
+    <string name="details_no_email_app">Can\'t find an email app</string>
 
     <!-- Toast message in details activity when invalid phone number entered [CHAR LIMIT=NONE] -->
     <string name="details_invalid_phone">Invalid phone number. Need 10 digits, no dashes</string>
