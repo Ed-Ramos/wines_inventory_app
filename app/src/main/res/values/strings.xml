@@ -2,7 +2,7 @@
     <string name="app_name">wines</string>
 
     <!-- Label for overflow menu option that inserts fake pet data into the app [CHAR LIMIT=20] -->
-    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+    <string name="action_insert_dummy_data">Insert sample wine</string>
 
     <!-- Label for overflow menu option that deletes all wine data in the app [CHAR LIMIT=20] -->
     <string name="action_delete_all_entries">Delete All Wines</string>
@@ -21,7 +21,6 @@
 
     <!-- Label for details overflow menu option that edits the current wine [CHAR LIMIT=20] -->
     <string name="action_edit_wine">Edit Wine</string>
-
 
     <!-- Label for name information in the editor [CHAR LIMIT=30] -->
     <string name="category_name">Name</string>
@@ -78,7 +77,7 @@
     <string name="editor_wine_image_failed">Wine image could not be loaded</string>
 
     <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
-    <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+    <string name="empty_view_title_text">It\'s a bit dry here...</string>
 
     <!-- Subtitle text for the empty view that prompts the user to add a wine [CHAR LIMIT=50] -->
     <string name="empty_view_subtitle_text">Get started by adding a wine</string>
@@ -118,6 +117,9 @@
 
     <!-- Toast message in details activity when invalid phone number entered [CHAR LIMIT=NONE] -->
     <string name="details_invalid_phone">Invalid phone number. Need 10 digits, no dashes</string>
+
+    <!-- Toast message in details activity when invalid email entered [CHAR LIMIT=NONE] -->
+    <string name="details_invalid_email">Invalid email address.</string>
 
     <!-- Toast message in category activity when a wine has been sold [CHAR LIMIT=NONE] -->
     <string name="category_wine_sold">Wine sold</string>

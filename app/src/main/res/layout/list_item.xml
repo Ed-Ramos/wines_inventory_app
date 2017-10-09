@@ -41,7 +41,7 @@
         android:fontFamily="sans-serif"
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="#AEB6BD"
-        tools:text="$15"/>
+        tools:text="$15.25"/>
 
 </LinearLayout>
 

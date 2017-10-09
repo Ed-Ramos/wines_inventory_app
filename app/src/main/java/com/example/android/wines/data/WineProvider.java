@@ -1,6 +1,5 @@
 package com.example.android.wines.data;
 
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -12,20 +11,24 @@ import android.util.Log;
 
 import com.example.android.wines.data.WineContract.WineEntry;
 
-
 /**
  * {@link ContentProvider} for Wines app.
  */
 
 public class WineProvider extends ContentProvider {
 
-    /** URI matcher code for the content URI for the wines table */
+    /**
+     * URI matcher code for the content URI for the wines table
+     */
     public static final int WINES = 100;
 
-    /** URI matcher code for the content URI for a single wine in the wines table */
+    /**
+     * URI matcher code for the content URI for a single wine in the wines table
+     */
     public static final int WINE_ID = 101;
 
-    /** URI matcher object to match a context URI to a corresponding code.
+    /**
+     * URI matcher object to match a context URI to a corresponding code.
      * The input passed into the constructor represents the code to return for the root URI.
      * It's common to use NO_MATCH as the input for this case.
      */
@@ -55,9 +58,10 @@ public class WineProvider extends ContentProvider {
 
     private WineDbHelper mDbHelper;
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     public static final String LOG_TAG = WineProvider.class.getSimpleName();
-
 
     /**
      * Initialize the provider and the database helper object.
@@ -107,7 +111,7 @@ public class WineProvider extends ContentProvider {
                 // arguments that will fill in the "?". Since we have 1 question mark in the
                 // selection, we have 1 String in the selection arguments' String array.
                 selection = WineEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 // This will perform a query on the wines table where the _id equals 3 to return a
                 // Cursor containing that row of the table.
@@ -127,13 +131,12 @@ public class WineProvider extends ContentProvider {
         return cursor;
     }//End query method
 
-
     /**
      * Insert new data into the provider with the given ContentValues.
      */
 
     @Override
-    public Uri insert( Uri uri,  ContentValues contentValues) {
+    public Uri insert(Uri uri, ContentValues contentValues) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case WINES:
@@ -147,13 +150,13 @@ public class WineProvider extends ContentProvider {
 
         // Check that the name is not null
         String name = values.getAsString(WineEntry.COLUMN_WINE_NAME);
-        if (name == null || name.length()==0) {
+        if (name == null || name.length() == 0) {
             throw new IllegalArgumentException("Pet requires a name");
         }
 
         // Check that the winery is not null
         String winery = values.getAsString(WineEntry.COLUMN_WINE_WINERY);
-        if (winery == null || winery.length()==0) {
+        if (winery == null || winery.length() == 0) {
             throw new IllegalArgumentException("Wine requires a winery");
         }
 
@@ -173,25 +176,23 @@ public class WineProvider extends ContentProvider {
         }
 
         // If the price is provided, check that it's greater than or equal to 0
-        Integer price = values.getAsInteger(WineEntry.COLUMN_WINE_PRICE);
+        Float price = values.getAsFloat(WineEntry.COLUMN_WINE_PRICE);
 
         if (price != null && price < 0) {
             throw new IllegalArgumentException("Wine requires valid price");
         }
 
-
         // Check that the winery email is not null
         String email = values.getAsString(WineEntry.COLUMN_WINE_EMAIL);
-        if (email == null || email.length()==0) {
+        if (email == null || email.length() == 0) {
             throw new IllegalArgumentException("Wine requires a winery email");
         }
 
         // Check that the winery phone is not null
         String phone = values.getAsString(WineEntry.COLUMN_WINE_PHONE);
-        if (phone == null || phone.length()==0) {
+        if (phone == null || phone.length() == 0) {
             throw new IllegalArgumentException("Wine requires a winery phone");
         }
-
 
         // Get writeable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -214,8 +215,8 @@ public class WineProvider extends ContentProvider {
     }//End InsertWine
 
     @Override
-    public int update( Uri uri,  ContentValues contentValues,  String selection,
-                       String[] selectionArgs) {
+    public int update(Uri uri, ContentValues contentValues, String selection,
+                      String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
 
@@ -227,14 +228,13 @@ public class WineProvider extends ContentProvider {
                 // so we know which row to update. Selection will be "_id=?" and selection
                 // arguments will be a String array containing the actual ID.
                 selection = WineEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateWine(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
         }
 
     }//End Update
-
 
     /**
      * Update wines in the database with the given content values. Apply the changes to the rows
@@ -285,12 +285,11 @@ public class WineProvider extends ContentProvider {
         // check that the price value is valid.
         if (values.containsKey(WineEntry.COLUMN_WINE_PRICE)) {
             // Check that the price is greater than or equal to 0
-            Integer price = values.getAsInteger(WineEntry.COLUMN_WINE_PRICE);
+            Float price = values.getAsFloat(WineEntry.COLUMN_WINE_PRICE);
             if (price != null && price < 0) {
-                throw new IllegalArgumentException("Pet requires valid quantity");
+                throw new IllegalArgumentException("Pet requires valid price");
             }
         }
-
 
         // If the {@link WineEntry#COLUMN_WINE_EMAIL} key is present,
         // check that the email value is not null.
@@ -300,7 +299,6 @@ public class WineProvider extends ContentProvider {
                 throw new IllegalArgumentException("Winery requires a email");
             }
         }
-
 
         // If the {@link WineEntry#COLUMN_WINE_PHONE} key is present,
         // check that the phone value is not null.
@@ -320,7 +318,6 @@ public class WineProvider extends ContentProvider {
             }
         }
 
-
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {
             return 0;
@@ -331,7 +328,6 @@ public class WineProvider extends ContentProvider {
 
         // Perform the update on the database and get the number of rows affected
         int rowsUpdated = database.update(WineEntry.TABLE_NAME, values, selection, selectionArgs);
-
 
         // If 1 or more rows were updated, then notify all listeners that the data at the
         // given URI has changed
@@ -344,13 +340,12 @@ public class WineProvider extends ContentProvider {
 
     }//End Of UpdateWine method
 
-
     /**
      * Delete the data at the given selection and selection arguments.
      */
 
     @Override
-    public int delete( Uri uri,  String selection,  String[] selectionArgs) {
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
 
         // Get writeable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -375,7 +370,7 @@ public class WineProvider extends ContentProvider {
             case WINE_ID:
                 // Delete a single row given by the ID in the URI
                 selection = WineEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = database.delete(WineEntry.TABLE_NAME, selection, selectionArgs);
                 // If 1 or more rows were deleted, then notify all listeners that the data at the
                 // given URI has changed
@@ -396,7 +391,7 @@ public class WineProvider extends ContentProvider {
      */
 
     @Override
-    public String getType( Uri uri) {
+    public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case WINES:

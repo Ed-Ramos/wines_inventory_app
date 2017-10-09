@@ -10,7 +10,8 @@ public final class WineContract {
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
 
-    private WineContract(){}
+    private WineContract() {
+    }
 
     /**
      * The "Content authority" is a name for the entire content provider, similar to the
@@ -43,7 +44,9 @@ public final class WineContract {
 
     public static final class WineEntry implements BaseColumns {
 
-        /** The content URI to access the wine data in the provider */
+        /**
+         * The content URI to access the wine data in the provider
+         */
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_WINES);
 
         /**

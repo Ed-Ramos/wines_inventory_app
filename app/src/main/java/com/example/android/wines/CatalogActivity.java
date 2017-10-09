@@ -20,14 +20,13 @@ import android.widget.ListView;
 
 import com.example.android.wines.data.WineContract.WineEntry;
 
-public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     //Identifier for the wine data loader
     private static final int WINE_LOADER = 0;
 
     //Adapter for the ListView
     WineCursorAdapter mCursorAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         mCursorAdapter = new WineCursorAdapter(this, null);
         wineListView.setAdapter(mCursorAdapter);
 
-      //Setup the item click listener
+        //Setup the item click listener
         wineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -81,7 +80,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     }//End OnCreate
 
-
     private void insertWine() {
 
         // Create a ContentValues object where column names are the keys,
@@ -91,7 +89,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(WineEntry.COLUMN_WINE_WINERY, "Mondalvi");
         values.put(WineEntry.COLUMN_WINE_YEAR, 2015);
         values.put(WineEntry.COLUMN_WINE_QUANTITY, 10);
-        values.put(WineEntry.COLUMN_WINE_PRICE, 7);
+        values.put(WineEntry.COLUMN_WINE_PRICE, 7.36);
         values.put(WineEntry.COLUMN_WINE_EMAIL, "mondalvi@aol.com");
         values.put(WineEntry.COLUMN_WINE_PHONE, "2224578940");
         values.put(WineEntry.COLUMN_WINE_IMAGE, "content://com.android.providers.media.documents/document/image%3A5734");
@@ -120,7 +118,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
@@ -137,10 +134,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-     // define a projection that specifies the columns from the table we care about
+        // define a projection that specifies the columns from the table we care about
 
         String[] projection = {
                 WineEntry._ID,
@@ -158,10 +154,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     }
 
-        @Override
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            // Update {link WineCursorAdapter} with this new cursor containing updated wine data
-            mCursorAdapter.swapCursor(data);
+        // Update {link WineCursorAdapter} with this new cursor containing updated wine data
+        mCursorAdapter.swapCursor(data);
 
     }
 

@@ -15,14 +15,13 @@ import android.widget.Toast;
 
 import com.example.android.wines.data.WineContract.WineEntry;
 
-
 /**
  * {@link WineCursorAdapter} is an adapter for a list or grid view
  * that uses a {@link Cursor} of pet data as its data source. This adapter knows
  * how to create list items for each row of wine data in the {@link Cursor}.
  */
 
-public class WineCursorAdapter extends CursorAdapter{
+public class WineCursorAdapter extends CursorAdapter {
 
     /**
      * Constructs a new {@link WineCursorAdapter}.
@@ -78,36 +77,36 @@ public class WineCursorAdapter extends CursorAdapter{
         // Read the wine attributes from the Cursor for the current wine
         String wineName = cursor.getString(nameColumnIndex);
         final int wineQuantity = cursor.getInt(quantityColumnIndex);
-        int winePrice = cursor.getInt(priceColumnIndex);
-        final int wineId=cursor.getInt(IdColumnIndex);
+        Float winePrice = cursor.getFloat(priceColumnIndex);
+        final int wineId = cursor.getInt(IdColumnIndex);
 
         // Update the TextViews with the attributes for the current wine
         nameTextView.setText(wineName);
         quantityTextView.setText("Qty: " + String.valueOf(wineQuantity));
-        priceTextView.setText("$ "+ String.valueOf(winePrice));
+        priceTextView.setText("Price: " + "$" + String.valueOf(winePrice));
 
         Button saleButton = (Button) view.findViewById(R.id.sale_button);
         saleButton.setOnClickListener(new View.OnClickListener() {
 
-        @Override
+            @Override
 
-      public  void onClick(View view) {
-            if (wineQuantity > 0) {
-                int newWineQuantity = wineQuantity - 1;
-                Uri productUri = ContentUris.withAppendedId(WineEntry.CONTENT_URI, wineId);
+            public void onClick(View view) {
+                if (wineQuantity > 0) {
+                    int newWineQuantity = wineQuantity - 1;
+                    Uri productUri = ContentUris.withAppendedId(WineEntry.CONTENT_URI, wineId);
 
-                ContentValues values = new ContentValues();
-                values.put(WineEntry.COLUMN_WINE_QUANTITY, newWineQuantity);
-                context.getContentResolver().update(productUri, values, null, null);
-                Toast.makeText(context, context.getString(R.string.category_wine_sold), Toast.LENGTH_SHORT).show();
+                    ContentValues values = new ContentValues();
+                    values.put(WineEntry.COLUMN_WINE_QUANTITY, newWineQuantity);
+                    context.getContentResolver().update(productUri, values, null, null);
+                    Toast.makeText(context, context.getString(R.string.category_wine_sold), Toast.LENGTH_SHORT).show();
 
-            } else {
+                } else {
 
-                Toast.makeText(context, context.getString(R.string.category_wine_out_of_stock), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.category_wine_out_of_stock), Toast.LENGTH_SHORT).show();
+                }
             }
-        }
 
-    });
+        });
 
     }//End of BindView
 }//End of WineCursorAdapter

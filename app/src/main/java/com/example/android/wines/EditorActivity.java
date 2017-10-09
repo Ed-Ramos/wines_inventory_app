@@ -27,8 +27,7 @@ import android.widget.Toast;
 import com.example.android.wines.data.WineContract.WineEntry;
 import com.example.android.wines.data.WineDbHelper;
 
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String LOG_TAG = WineDbHelper.class.getSimpleName();
 
@@ -88,7 +87,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private ImageView mWineImageView;
 
-
     /**
      * Boolean flag that keeps track of whether the wine has been edited (true) or not (false)
      */
@@ -106,9 +104,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
@@ -138,15 +135,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         }
 
-
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_wine_name);
         mWineryEditText = (EditText) findViewById(R.id.edit_wine_winery);
         mYearEditText = (EditText) findViewById(R.id.edit_wine_year);
         mQuantityEditText = (EditText) findViewById(R.id.edit_wine_quantity);
         mPriceEditText = (EditText) findViewById(R.id.edit_wine_price);
-        mEmailEditText = (EditText)  findViewById(R.id.edit_wine_winery_email);
-        mPhoneEditText = (EditText)  findViewById(R.id.edit_wine_winery_phone);
+        mEmailEditText = (EditText) findViewById(R.id.edit_wine_winery_email);
+        mPhoneEditText = (EditText) findViewById(R.id.edit_wine_winery_phone);
         mWineImageView = (ImageView) findViewById(R.id.wine_image);
 
         // intent to pick wine image
@@ -193,7 +189,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mCurrentWineImageUri = data.getData();
             //Set it on the ImageView
             mWineImageView.setImageURI(mCurrentWineUri);
-            //Change scaleType from centerInside to centerCrop
+            //Change scaleType from centerInside to centerCrop so its takes entire view
             mWineImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
     }
@@ -218,69 +214,66 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 imageString = mCurrentWineImageUri.toString();
             }
 
-        }else {
+        } else {
             imageString = mCurrentWineImageUri.toString();
             Log.e(LOG_TAG, "imageUri " + imageString);
         }
-
 
         // Check if this is supposed to be a new wine
         // and check if all the fields in the editor are blank
         if (mCurrentWineUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(wineryString) &&
                 TextUtils.isEmpty(yearString) && TextUtils.isEmpty(quantityString) &&
-                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(emailString)  &&
+                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(emailString) &&
                 TextUtils.isEmpty(phoneString) && TextUtils.isEmpty(imageString)) {
             // Since no fields were modified, we can return early without creating a new wine.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
         }
 
-        if (TextUtils.isEmpty(nameString)){
+        if (TextUtils.isEmpty(nameString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_name),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-
-        if (TextUtils.isEmpty(wineryString)){
+        if (TextUtils.isEmpty(wineryString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_winery),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(yearString)){
+        if (TextUtils.isEmpty(yearString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_year),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(quantityString)){
+        if (TextUtils.isEmpty(quantityString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_quantity),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-
-        if (TextUtils.isEmpty(priceString)){
+        if (TextUtils.isEmpty(priceString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_price),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(emailString)){
+        if (TextUtils.isEmpty(emailString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_email),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(phoneString)){
+        if (TextUtils.isEmpty(phoneString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_phone),
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(imageString)){
+        if (TextUtils.isEmpty(imageString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_phone),
                     Toast.LENGTH_SHORT).show();
             return;
@@ -337,7 +330,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             finish();
         }
 
-
     }//End of saveWine method
 
     @Override
@@ -362,7 +354,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -414,128 +405,123 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * +
      */
 
-        @Override
-        public void onBackPressed() {
-            // If the pet hasn't changed, continue with handling back button press
-            if (!mWineHasChanged) {
-                super.onBackPressed();
-                return;
-            }
-
-            // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-            // Create a click listener to handle the user confirming that changes should be discarded.
-            DialogInterface.OnClickListener discardButtonClickListener =
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // User clicked "Discard" button, close the current activity.
-                            finish();
-                        }
-                    };
-
-            // Show dialog that there are unsaved changes
-            showUnsavedChangesDialog(discardButtonClickListener);
+    @Override
+    public void onBackPressed() {
+        // If the pet hasn't changed, continue with handling back button press
+        if (!mWineHasChanged) {
+            super.onBackPressed();
+            return;
         }
 
+        // Otherwise if there are unsaved changes, setup a dialog to warn the user.
+        // Create a click listener to handle the user confirming that changes should be discarded.
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Discard" button, close the current activity.
+                        finish();
+                    }
+                };
+
+        // Show dialog that there are unsaved changes
+        showUnsavedChangesDialog(discardButtonClickListener);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-            // Since the editor shows all wine attributes, define a projection that contains
-            // all columns from the wine table
-            String[] projection = {
-                    WineEntry._ID,
-                    WineEntry.COLUMN_WINE_NAME,
-                    WineEntry.COLUMN_WINE_WINERY,
-                    WineEntry.COLUMN_WINE_YEAR,
-                    WineEntry.COLUMN_WINE_QUANTITY,
-                    WineEntry.COLUMN_WINE_PRICE,
-                    WineEntry.COLUMN_WINE_EMAIL,
-                    WineEntry.COLUMN_WINE_PHONE,
-                    WineEntry.COLUMN_WINE_IMAGE};
+        // Since the editor shows all wine attributes, define a projection that contains
+        // all columns from the wine table
+        String[] projection = {
+                WineEntry._ID,
+                WineEntry.COLUMN_WINE_NAME,
+                WineEntry.COLUMN_WINE_WINERY,
+                WineEntry.COLUMN_WINE_YEAR,
+                WineEntry.COLUMN_WINE_QUANTITY,
+                WineEntry.COLUMN_WINE_PRICE,
+                WineEntry.COLUMN_WINE_EMAIL,
+                WineEntry.COLUMN_WINE_PHONE,
+                WineEntry.COLUMN_WINE_IMAGE};
 
-            // This loader will execute the ContentProvider's query method on a background thread
-            return new CursorLoader(this,   // Parent activity context
-                    mCurrentWineUri,         // Query the content URI for the current wine
-                    projection,             // Columns to include in the resulting Cursor
-                    null,                   // No selection clause
-                    null,                   // No selection arguments
-                    null);                  // Default sort order
-        }
-
-
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,   // Parent activity context
+                mCurrentWineUri,         // Query the content URI for the current wine
+                projection,             // Columns to include in the resulting Cursor
+                null,                   // No selection clause
+                null,                   // No selection arguments
+                null);                  // Default sort order
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-            // Bail early if the cursor is null or there is less than 1 row in the cursor
-            if (cursor == null || cursor.getCount() < 1) {
-                return;
-            }
-
-            // Proceed with moving to the first row of the cursor and reading data from it
-            // (This should be the only row in the cursor)
-            if (cursor.moveToFirst()) {
-                // Find the columns of pet attributes that we're interested in
-                int nameColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME);
-                int wineryColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_WINERY);
-                int yearColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_YEAR);
-                int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
-                int priceColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE);
-                int emailColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_EMAIL);
-                int phoneColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PHONE);
-                int imageColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_IMAGE);
-
-                // Extract out the value from the Cursor for the given column index
-                String name = cursor.getString(nameColumnIndex);
-                String winery = cursor.getString(wineryColumnIndex);
-                int year = cursor.getInt(yearColumnIndex);
-                int quantity = cursor.getInt(quantityColumnIndex);
-                int price = cursor.getInt(priceColumnIndex);
-                String email = cursor.getString(emailColumnIndex);
-                String phone = cursor.getString(phoneColumnIndex);
-                String image = cursor.getString(imageColumnIndex);
-
-                // Update the views on the screen with the values from the database
-                mNameEditText.setText(name);
-                mWineryEditText.setText(winery);
-                mYearEditText.setText(Integer.toString(year));
-                mQuantityEditText.setText(Integer.toString(quantity));
-                mPriceEditText.setText(Integer.toString(price));
-                mEmailEditText.setText(email);
-                mPhoneEditText.setText(phone);
-                Uri uri = Uri.parse(image);
-                mWineImageView.setImageURI(uri);
-                mCurrentWineImageUri = uri;
-                mWineImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            }
-
-        }//End of OnLoaderFinished
-
-
-        @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-            // If the loader is invalidated, clear out all the data from the input fields.
-            mNameEditText.setText("");
-            mWineryEditText.setText("");
-            mYearEditText.setText("");
-            mQuantityEditText.setText("");
-            mPriceEditText.setText("");
-            mEmailEditText.setText("");
-            mPhoneEditText.setText("");
-            mWineImageView.setImageURI(null);
+        // Bail early if the cursor is null or there is less than 1 row in the cursor
+        if (cursor == null || cursor.getCount() < 1) {
+            return;
         }
 
+        // Proceed with moving to the first row of the cursor and reading data from it
+        // (This should be the only row in the cursor)
+        if (cursor.moveToFirst()) {
+            // Find the columns of pet attributes that we're interested in
+            int nameColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME);
+            int wineryColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_WINERY);
+            int yearColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_YEAR);
+            int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
+            int priceColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE);
+            int emailColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_EMAIL);
+            int phoneColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PHONE);
+            int imageColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_IMAGE);
 
-        /**
-         * +     * Show a dialog that warns the user there are unsaved changes that will be lost
-         * +     * if they continue leaving the editor.
-         * +     *
-         * +     * @param discardButtonClickListener is the click listener for what to do when
-         * +     *                                   the user confirms they want to discard their changes
-         * +
-         */
+            // Extract out the value from the Cursor for the given column index
+            String name = cursor.getString(nameColumnIndex);
+            String winery = cursor.getString(wineryColumnIndex);
+            int year = cursor.getInt(yearColumnIndex);
+            int quantity = cursor.getInt(quantityColumnIndex);
+            Float price = cursor.getFloat(priceColumnIndex);
+            String email = cursor.getString(emailColumnIndex);
+            String phone = cursor.getString(phoneColumnIndex);
+            String image = cursor.getString(imageColumnIndex);
+
+            // Update the views on the screen with the values from the database
+            mNameEditText.setText(name);
+            mWineryEditText.setText(winery);
+            mYearEditText.setText(Integer.toString(year));
+            mQuantityEditText.setText(Integer.toString(quantity));
+            mPriceEditText.setText(Float.toString(price));
+            mEmailEditText.setText(email);
+            mPhoneEditText.setText(phone);
+            Uri uri = Uri.parse(image);
+            mWineImageView.setImageURI(uri);
+            mCurrentWineImageUri = uri;
+            mWineImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
+
+    }//End of OnLoaderFinished
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+        // If the loader is invalidated, clear out all the data from the input fields.
+        mNameEditText.setText("");
+        mWineryEditText.setText("");
+        mYearEditText.setText("");
+        mQuantityEditText.setText("");
+        mPriceEditText.setText("");
+        mEmailEditText.setText("");
+        mPhoneEditText.setText("");
+        mWineImageView.setImageURI(null);
+    }
+
+    /**
+     * +     * Show a dialog that warns the user there are unsaved changes that will be lost
+     * +     * if they continue leaving the editor.
+     * +     *
+     * +     * @param discardButtonClickListener is the click listener for what to do when
+     * +     *                                   the user confirms they want to discard their changes
+     * +
+     */
     private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
@@ -557,7 +543,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 
     /**
      * +     * Prompt the user to confirm that they want to delete this wine.

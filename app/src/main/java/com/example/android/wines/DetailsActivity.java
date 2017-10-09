@@ -22,8 +22,7 @@ import android.widget.Toast;
 import com.example.android.wines.data.WineContract;
 import com.example.android.wines.data.WineContract.WineEntry;
 
-public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
+public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * Identifier for the wine data loader
@@ -40,7 +39,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
      */
     private TextView mNameTextView;
 
-
     /**
      * TextView field to display the wine's winery
      */
@@ -51,7 +49,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
      */
     private TextView mYearTextView;
 
-
     /**
      * TextView field to display the wine's quantity
      */
@@ -61,7 +58,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
      * TextView field to display the wine's price
      */
     private TextView mPriceTextView;
-
 
     /**
      * TextView field to display the winery email
@@ -77,8 +73,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
      * ImageView field to enter the wine's image
      */
     private ImageView mWineImageView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +96,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         getLoaderManager().initLoader(EXISTING_WINE_LOADER, null, this);
 
     }//End OnCreate method
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,8 +121,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -181,7 +172,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             String winery = cursor.getString(wineryColumnIndex);
             int year = cursor.getInt(yearColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
-            int price = cursor.getInt(priceColumnIndex);
+            Float price = cursor.getFloat(priceColumnIndex);
             String email = cursor.getString(emailColumnIndex);
             String phone = cursor.getString(phoneColumnIndex);
             String image = cursor.getString(imageColumnIndex);
@@ -191,7 +182,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             mWineryTextView.setText(winery);
             mYearTextView.setText(Integer.toString(year));
             mQuantityTextView.setText(Integer.toString(quantity));
-            mPriceTextView.setText(Integer.toString(price));
+            mPriceTextView.setText("$" + Float.toString(price));
             mEmailTextView.setText(email);
             mPhoneTextView.setText(phone);
             Uri uri = Uri.parse(image);
@@ -245,7 +236,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         alertDialog.show();
     }
 
-
     private void deleteWine() {
         // Only perform the delete if this is an existing pet.
         if (mCurrentWineUri != null) {
@@ -270,9 +260,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         finish();
     }
 
-
     public void decrement(View view) {
-
 
         //Get the previous value first
         int currentValue = Integer.valueOf(mQuantityTextView.getText().toString());
@@ -290,7 +278,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     public void increment(View view) {
 
-
         //Get the previous value first
         int currentValue = Integer.valueOf(mQuantityTextView.getText().toString());
 
@@ -305,26 +292,34 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     }
 
-
     /**
      * Helper method to contact Winery via Email
      */
     public void emailWinery(View view) {
 
         String email = mEmailTextView.getText().toString();
-        String orderMessage= (" Please deliver standard reorder quantity");
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:" + email)); //only email app should handle this
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Wine order for Ed's wine shop");
-        intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }else {
+        if (email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 
-            Toast.makeText(this, getString(R.string.details_no_email_app), Toast.LENGTH_SHORT).show();
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+
+            String orderMessage = (" Please deliver standard reorder quantity");
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:" + email)); //only email app should handle this
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Wine order for Ed's wine shop");
+            intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+
+                Toast.makeText(this, getString(R.string.details_no_email_app), Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+
+            Toast.makeText(this, getString(R.string.details_invalid_email), Toast.LENGTH_SHORT).show();
         }
-    }
 
+    }
 
     /**
      * Helper method to contact Winery via Call
@@ -343,6 +338,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         }
     }
+
 }//End of DetailsActivity
 
 
