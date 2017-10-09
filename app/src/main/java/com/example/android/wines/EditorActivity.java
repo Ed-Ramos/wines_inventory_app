@@ -1,5 +1,6 @@
 package com.example.android.wines;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -9,21 +10,27 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.wines.data.WineContract.WineEntry;
+import com.example.android.wines.data.WineDbHelper;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
+
+    public static final String LOG_TAG = WineDbHelper.class.getSimpleName();
 
     /**
      * Identifier for the wine data loader
@@ -35,12 +42,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private Uri mCurrentWineUri;
 
+    /**
+     * Content URI for the existing wine image (null if it's a new wine)
+     */
+    private Uri mCurrentWineImageUri;
 
+    private static final int WINE_IMAGE_REQUEST_CODE = 100;
     /**
      * EditText field to enter the wine's name
      */
     private EditText mNameEditText;
-
 
     /**
      * EditText field to enter the wine's winery
@@ -52,7 +63,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private EditText mYearEditText;
 
-
     /**
      * EditText field to enter the wine's quantity
      */
@@ -62,6 +72,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * EditText field to enter the wine's price
      */
     private EditText mPriceEditText;
+
+    /**
+     * EditText field to enter the wine's winery email
+     */
+    private EditText mEmailEditText;
+
+    /**
+     * EditText field to enter the wine's winery phone number
+     */
+    private EditText mPhoneEditText;
+
+    /**
+     * ImageView field to enter the wine's image
+     */
+    private ImageView mWineImageView;
 
 
     /**
@@ -120,7 +145,25 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mYearEditText = (EditText) findViewById(R.id.edit_wine_year);
         mQuantityEditText = (EditText) findViewById(R.id.edit_wine_quantity);
         mPriceEditText = (EditText) findViewById(R.id.edit_wine_price);
+        mEmailEditText = (EditText)  findViewById(R.id.edit_wine_winery_email);
+        mPhoneEditText = (EditText)  findViewById(R.id.edit_wine_winery_phone);
+        mWineImageView = (ImageView) findViewById(R.id.wine_image);
 
+        // intent to pick wine image
+        mWineImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                    intent = new Intent(Intent.ACTION_GET_CONTENT);
+                } else {
+                    intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                }
+                intent.setType("image/*");
+                startActivityForResult(intent, WINE_IMAGE_REQUEST_CODE);
+            }
+        });
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -130,8 +173,30 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mYearEditText.setOnTouchListener(mTouchListener);
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
+        mEmailEditText.setOnTouchListener(mTouchListener);
+        mPhoneEditText.setOnTouchListener(mTouchListener);
+        mWineImageView.setOnTouchListener(mTouchListener);
 
     }//End of onCreate method
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == WINE_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            //If wrong code is returned or result is not ok, then return early and show toast message
+            if (data == null) {
+                Toast.makeText(this, getString(R.string.editor_wine_image_failed), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            //Store the URI of chosen image
+            mCurrentWineImageUri = data.getData();
+            //Set it on the ImageView
+            mWineImageView.setImageURI(mCurrentWineUri);
+            //Change scaleType from centerInside to centerCrop
+            mWineImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
+    }
 
     private void saveWine() {
 
@@ -143,6 +208,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String yearString = mYearEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
+        String emailString = mEmailEditText.getText().toString().trim();
+        String phoneString = mPhoneEditText.getText().toString().trim();
+        String imageString = null;
+
+        if (mCurrentWineUri == null) {
+
+            if (mCurrentWineImageUri != null) {
+                imageString = mCurrentWineImageUri.toString();
+            }
+
+        }else {
+            imageString = mCurrentWineImageUri.toString();
+            Log.e(LOG_TAG, "imageUri " + imageString);
+        }
 
 
         // Check if this is supposed to be a new wine
@@ -150,7 +229,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mCurrentWineUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(wineryString) &&
                 TextUtils.isEmpty(yearString) && TextUtils.isEmpty(quantityString) &&
-                TextUtils.isEmpty(priceString)) {
+                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(emailString)  &&
+                TextUtils.isEmpty(phoneString) && TextUtils.isEmpty(imageString)) {
             // Since no fields were modified, we can return early without creating a new wine.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
@@ -188,7 +268,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
+        if (TextUtils.isEmpty(emailString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_email),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        if (TextUtils.isEmpty(phoneString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_phone),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(imageString)){
+            Toast.makeText(this, getString(R.string.editor_require_wine_phone),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // Create a ContentValues object
         ContentValues values = new ContentValues();
@@ -197,6 +293,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(WineEntry.COLUMN_WINE_YEAR, yearString);
         values.put(WineEntry.COLUMN_WINE_QUANTITY, quantityString);
         values.put(WineEntry.COLUMN_WINE_PRICE, priceString);
+        values.put(WineEntry.COLUMN_WINE_EMAIL, emailString);
+        values.put(WineEntry.COLUMN_WINE_PHONE, phoneString);
+        values.put(WineEntry.COLUMN_WINE_IMAGE, imageString);
 
         // Determine if this is a new or existing wine by checking if mCurrentWineUri is null or not
         if (mCurrentWineUri == null) {
@@ -350,7 +449,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     WineEntry.COLUMN_WINE_WINERY,
                     WineEntry.COLUMN_WINE_YEAR,
                     WineEntry.COLUMN_WINE_QUANTITY,
-                    WineEntry.COLUMN_WINE_PRICE};
+                    WineEntry.COLUMN_WINE_PRICE,
+                    WineEntry.COLUMN_WINE_EMAIL,
+                    WineEntry.COLUMN_WINE_PHONE,
+                    WineEntry.COLUMN_WINE_IMAGE};
 
             // This loader will execute the ContentProvider's query method on a background thread
             return new CursorLoader(this,   // Parent activity context
@@ -380,6 +482,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 int yearColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_YEAR);
                 int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
                 int priceColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE);
+                int emailColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_EMAIL);
+                int phoneColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PHONE);
+                int imageColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_IMAGE);
 
                 // Extract out the value from the Cursor for the given column index
                 String name = cursor.getString(nameColumnIndex);
@@ -387,6 +492,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 int year = cursor.getInt(yearColumnIndex);
                 int quantity = cursor.getInt(quantityColumnIndex);
                 int price = cursor.getInt(priceColumnIndex);
+                String email = cursor.getString(emailColumnIndex);
+                String phone = cursor.getString(phoneColumnIndex);
+                String image = cursor.getString(imageColumnIndex);
 
                 // Update the views on the screen with the values from the database
                 mNameEditText.setText(name);
@@ -394,6 +502,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mYearEditText.setText(Integer.toString(year));
                 mQuantityEditText.setText(Integer.toString(quantity));
                 mPriceEditText.setText(Integer.toString(price));
+                mEmailEditText.setText(email);
+                mPhoneEditText.setText(phone);
+                Uri uri = Uri.parse(image);
+                mWineImageView.setImageURI(uri);
+                mCurrentWineImageUri = uri;
+                mWineImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
 
         }//End of OnLoaderFinished
@@ -408,7 +522,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mYearEditText.setText("");
             mQuantityEditText.setText("");
             mPriceEditText.setText("");
-
+            mEmailEditText.setText("");
+            mPhoneEditText.setText("");
+            mWineImageView.setImageURI(null);
         }
 
 

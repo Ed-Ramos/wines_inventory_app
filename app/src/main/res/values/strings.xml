@@ -38,6 +38,12 @@
     <!-- Label for price information in the editor [CHAR LIMIT=30] -->
     <string name="category_price">Price</string>
 
+    <!-- Label for winery email in the editor [CHAR LIMIT=30] -->
+    <string name="category_winery_email">Winery Email</string>
+
+    <!-- Label for winery phone in the editor [CHAR LIMIT=30] -->
+    <string name="category_winery_phone">Winery Phone</string>
+
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_wine_name">Wine Name</string>
 
@@ -56,11 +62,20 @@
     <!-- Text hint for winery field in the editor [CHAR LIMIT=30] -->
     <string name="hint_wine_winery">Winery</string>
 
+    <!-- Text hint for winery email field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_wine_winery_email">Winery Email</string>
+
+    <!-- Text hint for winery phone field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_wine_winery_phone">Winery Phone</string>
+
     <!-- Label for editor insert wine fails [CHAR LIMIT=20] -->
     <string name="editor_insert_wine_failed">Error with saving wine</string>
 
     <!-- Label for editor insert wine successful [CHAR LIMIT=20] -->
     <string name="editor_insert_wine_successful">Wine saved</string>
+
+    <!-- Label for editor wine image loading unsuccessful [CHAR LIMIT=20] -->
+    <string name="editor_wine_image_failed">Wine image could not be loaded</string>
 
     <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
     <string name="empty_view_title_text">It\'s a bit lonely here...</string>
@@ -88,6 +103,27 @@
 
     <!-- Toast message in editor when price field is left empty [CHAR LIMIT=NONE] -->
     <string name="editor_require_wine_price">Cant have empty wine price</string>
+
+    <!-- Toast message in editor when winery email field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_email">Cant have empty winery email</string>
+
+    <!-- Toast message in editor when winery phone number field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_phone">Cant have empty winery phone number</string>
+
+    <!-- Toast message in editor when wine image field is left empty [CHAR LIMIT=NONE] -->
+    <string name="editor_require_wine_image">Cant have empty wine image</string>
+
+    <!-- Toast message in details activity when no email appavailable to send email [CHAR LIMIT=NONE] -->
+    <string name="details_no_email_app">Cant find an email app</string>
+
+    <!-- Toast message in details activity when invalid phone number entered [CHAR LIMIT=NONE] -->
+    <string name="details_invalid_phone">Invalid phone number. Need 10 digits, no dashes</string>
+
+    <!-- Toast message in category activity when a wine has been sold [CHAR LIMIT=NONE] -->
+    <string name="category_wine_sold">Wine sold</string>
+
+    <!-- Toast message in category activity when trying to sell wine but stock is 0 [CHAR LIMIT=NONE] -->
+    <string name="category_wine_out_of_stock">Wine is out of stock</string>
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>

@@ -3,6 +3,7 @@ package com.example.android.wines;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,9 +14,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.wines.data.WineContract;
 import com.example.android.wines.data.WineContract.WineEntry;
 
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -59,6 +63,22 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private TextView mPriceTextView;
 
 
+    /**
+     * TextView field to display the winery email
+     */
+    private TextView mEmailTextView;
+
+    /**
+     * TextView field to display the winery phone
+     */
+    private TextView mPhoneTextView;
+
+    /**
+     * ImageView field to enter the wine's image
+     */
+    private ImageView mWineImageView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +89,15 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         Intent intent = getIntent();
         mCurrentWineUri = intent.getData();
 
-
-
         // Find all relevant views that we will need to read user input from
         mNameTextView = (TextView) findViewById(R.id.details_wine_name);
         mWineryTextView = (TextView) findViewById(R.id.details_wine_winery);
         mYearTextView = (TextView) findViewById(R.id.details_wine_year);
         mQuantityTextView = (TextView) findViewById(R.id.details_wine_quantity);
         mPriceTextView = (TextView) findViewById(R.id.details_wine_price);
-
+        mEmailTextView = (TextView) findViewById(R.id.details_wine_email);
+        mPhoneTextView = (TextView) findViewById(R.id.details_wine_phone);
+        mWineImageView = (ImageView) findViewById(R.id.details_wine_image);
 
         getLoaderManager().initLoader(EXISTING_WINE_LOADER, null, this);
 
@@ -121,7 +141,10 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 WineEntry.COLUMN_WINE_WINERY,
                 WineEntry.COLUMN_WINE_YEAR,
                 WineEntry.COLUMN_WINE_QUANTITY,
-                WineEntry.COLUMN_WINE_PRICE};
+                WineEntry.COLUMN_WINE_PRICE,
+                WineEntry.COLUMN_WINE_EMAIL,
+                WineEntry.COLUMN_WINE_PHONE,
+                WineEntry.COLUMN_WINE_IMAGE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -149,6 +172,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             int yearColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_YEAR);
             int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
             int priceColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE);
+            int emailColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_EMAIL);
+            int phoneColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PHONE);
+            int imageColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_IMAGE);
 
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
@@ -156,6 +182,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             int year = cursor.getInt(yearColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
             int price = cursor.getInt(priceColumnIndex);
+            String email = cursor.getString(emailColumnIndex);
+            String phone = cursor.getString(phoneColumnIndex);
+            String image = cursor.getString(imageColumnIndex);
 
             // Update the views on the screen with the values from the database
             mNameTextView.setText(name);
@@ -163,6 +192,10 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             mYearTextView.setText(Integer.toString(year));
             mQuantityTextView.setText(Integer.toString(quantity));
             mPriceTextView.setText(Integer.toString(price));
+            mEmailTextView.setText(email);
+            mPhoneTextView.setText(phone);
+            Uri uri = Uri.parse(image);
+            mWineImageView.setImageURI(uri);
         }
 
     }
@@ -170,16 +203,17 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-
         // If the loader is invalidated, clear out all the data from the input fields.
         mNameTextView.setText("");
         mWineryTextView.setText("");
         mYearTextView.setText("");
         mQuantityTextView.setText("");
         mPriceTextView.setText("");
+        mEmailTextView.setText("");
+        mPhoneTextView.setText("");
+        mWineImageView.setImageURI(null);
 
     }
-
 
     /**
      * +     * Prompt the user to confirm that they want to delete this wine.
@@ -236,6 +270,79 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         finish();
     }
 
+
+    public void decrement(View view) {
+
+
+        //Get the previous value first
+        int currentValue = Integer.valueOf(mQuantityTextView.getText().toString());
+
+        if (currentValue > 0) {
+
+            currentValue -= 1;
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(WineContract.WineEntry.COLUMN_WINE_QUANTITY, currentValue);
+            getContentResolver().update(mCurrentWineUri, contentValues, null, null);
+        }
+
+    }
+
+    public void increment(View view) {
+
+
+        //Get the previous value first
+        int currentValue = Integer.valueOf(mQuantityTextView.getText().toString());
+
+        if (currentValue >= 0) {
+
+            currentValue += 1;
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(WineContract.WineEntry.COLUMN_WINE_QUANTITY, currentValue);
+            getContentResolver().update(mCurrentWineUri, contentValues, null, null);
+        }
+
+    }
+
+
+    /**
+     * Helper method to contact Winery via Email
+     */
+    public void emailWinery(View view) {
+
+        String email = mEmailTextView.getText().toString();
+        String orderMessage= (" Please deliver standard reorder quantity");
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:" + email)); //only email app should handle this
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Wine order for Ed's wine shop");
+        intent.putExtra(Intent.EXTRA_TEXT, orderMessage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }else {
+
+            Toast.makeText(this, getString(R.string.details_no_email_app), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    /**
+     * Helper method to contact Winery via Call
+     */
+    public void phoneWinery(View view) {
+        String phoneNumber = mPhoneTextView.getText().toString();
+        if (phoneNumber.matches("^[0-9]{10}$")) {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + phoneNumber));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        } else {
+
+            Toast.makeText(this, getString(R.string.details_invalid_phone), Toast.LENGTH_SHORT).show();
+
+        }
+    }
 }//End of DetailsActivity
 
 

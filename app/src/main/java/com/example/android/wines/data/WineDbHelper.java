@@ -44,7 +44,10 @@ public class WineDbHelper extends SQLiteOpenHelper {
                 + WineEntry.COLUMN_WINE_WINERY + " TEXT NOT NULL, "
                 + WineEntry.COLUMN_WINE_YEAR + " INTEGER NOT NULL, "
                 + WineEntry.COLUMN_WINE_QUANTITY + " INTEGER NOT NULL DEFAULT 0,"
-                + WineEntry.COLUMN_WINE_PRICE + " INTEGER NOT NULL DEFAULT 0); ";
+                + WineEntry.COLUMN_WINE_PRICE + " INTEGER NOT NULL DEFAULT 0, "
+                + WineEntry.COLUMN_WINE_EMAIL + " TEXT NOT NULL, "
+                + WineEntry.COLUMN_WINE_PHONE + " TEXLT NOT NULL, "
+                + WineEntry.COLUMN_WINE_IMAGE + " TEXLT NOT NULL);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_WINES_TABLE);

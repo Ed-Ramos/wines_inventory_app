@@ -92,6 +92,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(WineEntry.COLUMN_WINE_YEAR, 2015);
         values.put(WineEntry.COLUMN_WINE_QUANTITY, 10);
         values.put(WineEntry.COLUMN_WINE_PRICE, 7);
+        values.put(WineEntry.COLUMN_WINE_EMAIL, "mondalvi@aol.com");
+        values.put(WineEntry.COLUMN_WINE_PHONE, "2224578940");
+        values.put(WineEntry.COLUMN_WINE_IMAGE, "content://com.android.providers.media.documents/document/image%3A5734");
 
         // Insert a new row for Merlot into the provider using the ContentResolver.
         // Use the {@link wineEntry#CONTENT_URI} to indicate that we want to insert

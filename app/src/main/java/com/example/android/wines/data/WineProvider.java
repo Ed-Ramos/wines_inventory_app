@@ -179,6 +179,20 @@ public class WineProvider extends ContentProvider {
             throw new IllegalArgumentException("Wine requires valid price");
         }
 
+
+        // Check that the winery email is not null
+        String email = values.getAsString(WineEntry.COLUMN_WINE_EMAIL);
+        if (email == null || email.length()==0) {
+            throw new IllegalArgumentException("Wine requires a winery email");
+        }
+
+        // Check that the winery phone is not null
+        String phone = values.getAsString(WineEntry.COLUMN_WINE_PHONE);
+        if (phone == null || phone.length()==0) {
+            throw new IllegalArgumentException("Wine requires a winery phone");
+        }
+
+
         // Get writeable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
@@ -276,6 +290,36 @@ public class WineProvider extends ContentProvider {
                 throw new IllegalArgumentException("Pet requires valid quantity");
             }
         }
+
+
+        // If the {@link WineEntry#COLUMN_WINE_EMAIL} key is present,
+        // check that the email value is not null.
+        if (values.containsKey(WineEntry.COLUMN_WINE_EMAIL)) {
+            String email = values.getAsString(WineEntry.COLUMN_WINE_EMAIL);
+            if (email == null) {
+                throw new IllegalArgumentException("Winery requires a email");
+            }
+        }
+
+
+        // If the {@link WineEntry#COLUMN_WINE_PHONE} key is present,
+        // check that the phone value is not null.
+        if (values.containsKey(WineEntry.COLUMN_WINE_PHONE)) {
+            String phone = values.getAsString(WineEntry.COLUMN_WINE_PHONE);
+            if (phone == null) {
+                throw new IllegalArgumentException("Winery requires a phone");
+            }
+        }
+
+        // If the {@link WineEntry#COLUMN_WINE_IMAGE} key is present,
+        // check that the image value is not null.
+        if (values.containsKey(WineEntry.COLUMN_WINE_IMAGE)) {
+            String image = values.getAsString(WineEntry.COLUMN_WINE_IMAGE);
+            if (image == null) {
+                throw new IllegalArgumentException("Wine requires an image");
+            }
+        }
+
 
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {

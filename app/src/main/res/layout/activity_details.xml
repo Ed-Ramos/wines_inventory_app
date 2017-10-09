@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_margin"
     tools:context=".DetailsActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin">
+
+
+    <ImageView
+        android:id="@+id/details_wine_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wine_image_height"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_add_a_photo"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,15 +28,15 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="@string/category_name"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_name" />
 
         <!-- Name field -->
         <TextView
             android:id="@+id/details_wine_name"
+            style="@style/EditorFieldStyle"
             android:hint="@string/hint_wine_name"
-            android:inputType="textCapWords"
-            style="@style/EditorFieldStyle" />
+            android:inputType="textCapWords" />
 
     </LinearLayout>
 
@@ -33,15 +47,15 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="@string/category_winery"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_winery" />
 
         <!-- Winery field -->
         <TextView
             android:id="@+id/details_wine_winery"
+            style="@style/EditorFieldStyle"
             android:hint="@string/hint_wine_winery"
-            android:inputType="textCapWords"
-            style="@style/EditorFieldStyle" />
+            android:inputType="textCapWords" />
 
     </LinearLayout>
 
@@ -51,15 +65,15 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="@string/category_year"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_year" />
 
         <!-- Year field -->
         <TextView
             android:id="@+id/details_wine_year"
+            style="@style/EditorFieldStyle"
             android:hint="@string/hint_wine_year"
-            android:inputType="textCapWords|number"
-            style="@style/EditorFieldStyle" />
+            android:inputType="textCapWords|number" />
 
     </LinearLayout>
 
@@ -69,15 +83,15 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="@string/category_quantity"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_quantity" />
 
         <!-- Quantity field -->
         <TextView
             android:id="@+id/details_wine_quantity"
+            style="@style/EditorFieldStyle"
             android:hint="@string/hint_wine_quantity"
-            android:inputType="textCapWords|number"
-            style="@style/EditorFieldStyle" />
+            android:inputType="textCapWords|number" />
 
     </LinearLayout>
 
@@ -88,17 +102,85 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="@string/category_price"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_price" />
 
         <!-- Price field -->
         <TextView
             android:id="@+id/details_wine_price"
+            style="@style/EditorFieldStyle"
             android:hint="@string/hint_wine_price"
-            android:inputType="textCapWords|number"
-            style="@style/EditorFieldStyle" />
+            android:inputType="textCapWords|number" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/category_winery_email" />
+
+        <!-- Winery email field -->
+        <TextView
+            android:id="@+id/details_wine_email"
+            style="@style/EditorFieldStyle"
+            android:hint="@string/hint_wine_winery_email"
+            android:inputType="textCapWords" />
+
 
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/category_winery_phone" />
+
+        <!-- Winery phone field -->
+        <TextView
+            android:id="@+id/details_wine_phone"
+            style="@style/EditorFieldStyle"
+            android:hint="@string/hint_wine_winery_phone"
+            android:inputType="textCapWords|number" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/decrement_button"
+        android:layout_width="48sp"
+        android:layout_height="48sp"
+        android:onClick="decrement"
+        android:text="-" />
+
+    <Button
+        android:id="@+id/increment_button"
+        android:layout_width="48sp"
+        android:layout_height="48sp"
+        android:onClick="increment"
+        android:text="+" />
+
+    <Button
+        android:id="@+id/email_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="emailWinery"
+        android:text="Email" />
+
+    <Button
+        android:id="@+id/phone_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="phoneWinery"
+        android:text="Phone" />
+
 </LinearLayout>
+
+</ScrollView>

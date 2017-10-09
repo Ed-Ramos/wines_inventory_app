@@ -7,5 +7,7 @@
     <!-- Common margin value used throughout the app -->
     <dimen name="activity_margin">16dp</dimen>
 
+    <!-- Height value for wine image -->
+    <dimen name="wine_image_height">200dp</dimen>
 
 </resources>
