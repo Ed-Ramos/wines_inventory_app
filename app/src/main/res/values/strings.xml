@@ -94,6 +94,9 @@
     <!-- Toast message in editor when year field is left empty [CHAR LIMIT=NONE] -->
     <string name="editor_require_wine_year">Can\'t have empty wine year</string>
 
+    <!-- Toast message in editor when year entered is less than 1800 [CHAR LIMIT=NONE] -->
+    <string name="editor_invalid_wine_year">Wine year can\'t be less than 1800</string>
+
     <!-- Toast message in editor when quantity field is left empty [CHAR LIMIT=NONE] -->
     <string name="editor_require_wine_quantity">Can\'t have empty wine price</string>
 

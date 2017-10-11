@@ -243,6 +243,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
+        if (Integer.parseInt(yearString) < 1800) {
+            Toast.makeText(this, getString(R.string.editor_invalid_wine_year),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (TextUtils.isEmpty(yearString)) {
             Toast.makeText(this, getString(R.string.editor_require_wine_year),
                     Toast.LENGTH_SHORT).show();
